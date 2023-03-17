@@ -6,5 +6,6 @@
     },
     "contactlist" : "Kontakte",
     "categories" : "Kategorien",
-    "contactfields" : "Felder"
+    "contactfields" : "Felder",
+    "this-field-cannot-be-deleted": "Dieses Feld kann nicht entfernt werden."
 }

@@ -7,10 +7,16 @@ $contactfields = $configData->contactfields;
 ?>
 <form method="POST" action="<?php echo OGC_PLUGIN_PATH_CONTACTFIELDS; ?>">
     <input type="hidden" id="jstokenCSRF" name="tokenCSRF" value="<?php echo $tokenCSRF; ?>">
+    <div class="form-group">
+        <label></label>
+        <input type="text" class="form-control" id="contactfield0" name="contactfield0" value="<?php echo  $L->g("name"); ?>" readonly/>
+        <small id="emailHelp" class="form-text text-muted"><?php echo  $L->g("this field cannot be deleted"); ?></small>
+    </div>
     <?php for ($i = 0; $i < count($contactfields); $i++) { ?>
         <div class="form-group">
             <label></label>
-            <input type="text" class="form-control" id="contactfield<?php echo $i; ?>" name="contactfield<?php echo $i; ?>" value="<?php echo $contactfields[$i]; ?>" />
+            <input type="text" class="form-control" id="contactfield<?php echo ($i+1); ?>" name="contactfield
+            <?php echo ($i+1); ?>" value="<?php echo $contactfields[$i]; ?>" />
         </div>
     <?php } ?>
     <div id="contactfieldcontainer"></div>
@@ -20,7 +26,7 @@ $contactfields = $configData->contactfields;
 <script>
     //Create new empty contactfield
     $(document).ready(function() {
-        createNext(<?php echo count($contactfields); ?>);
+        createNext(<?php echo (count($contactfields)+1); ?>);
     });
 
 

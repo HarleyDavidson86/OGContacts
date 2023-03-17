@@ -6,5 +6,6 @@
     },
     "contactlist" : "Contacts",
     "categories" : "Categories",
-    "contactfields" : "Contact Fields"
+    "contactfields" : "Contact Fields",
+    "this field cannot be deleted": "This field is mandatory and cannot be deleted."
 }

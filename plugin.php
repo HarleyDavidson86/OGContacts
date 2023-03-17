@@ -16,6 +16,7 @@ class ogcontacts extends Plugin
     define('OGC_FIELDSVIEW', isset($_GET['fields']));
 
     define('OGC_CONFIGFILE_PATH', $this->phpPath() . 'data/config.json');
+    define('OGC_CONTACTSFILE_PATH', $this->phpPath() . 'data/contacts.json');
   }
 
   public function adminView()
@@ -36,7 +37,7 @@ class ogcontacts extends Plugin
     echo  '</li>';
     echo  '</ul>';
     if (OGC_LISTVIEW) {
-      echo '<p>List View</p>';
+      include($this->phpPath() . 'php/list.php');
     }
     if (OGC_CATEGORIESVIEW) {
       include($this->phpPath() . 'php/categories.php');
