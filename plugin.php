@@ -10,10 +10,12 @@ class ogcontacts extends Plugin
     define('OGC_PLUGIN_PATH', $url);
     define('OGC_PLUGIN_PATH_CATEGORIES', $url . '?categories');
     define('OGC_PLUGIN_PATH_CONTACTFIELDS', $url . '?fields');
+    define('OGC_PLUGIN_PATH_ADDNEW', $url . '?addnew');
 
     define('OGC_LISTVIEW', !isset($_GET['categories']) && !isset($_GET['fields']));
     define('OGC_CATEGORIESVIEW', isset($_GET['categories']));
     define('OGC_FIELDSVIEW', isset($_GET['fields']));
+    define('OGC_NEWCONTACTVIEW', isset($_GET['addnew']));
 
     define('OGC_CONFIGFILE_PATH', $this->phpPath() . 'data/config.json');
     define('OGC_CONTACTSFILE_PATH', $this->phpPath() . 'data/contacts.json');
@@ -37,7 +39,11 @@ class ogcontacts extends Plugin
     echo  '</li>';
     echo  '</ul>';
     if (OGC_LISTVIEW) {
-      include($this->phpPath() . 'php/list.php');
+      if (OGC_NEWCONTACTVIEW) {
+        include($this->phpPath() . 'php/addnew.php');
+      } else {
+        include($this->phpPath() . 'php/list.php');
+      }
     }
     if (OGC_CATEGORIESVIEW) {
       include($this->phpPath() . 'php/categories.php');

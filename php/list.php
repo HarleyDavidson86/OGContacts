@@ -6,7 +6,7 @@ $contactsData = json_decode($filecontent);
 $contacts = $contactsData->contacts;
 ?>
 <div class="my-3">
-    <button type="button" class="btn btn-primary"><?php echo $L->g("add"); ?></button>
+    <a class="btn btn-primary" href="<?php echo OGC_PLUGIN_PATH_ADDNEW; ?>"><?php echo $L->g("add"); ?></a>
 </div>
 <table class="table">
     <thead>
@@ -14,7 +14,7 @@ $contacts = $contactsData->contacts;
             <th scope="col">#</th>
             <th scope="col"><?php echo $L->g("name"); ?></th>
             <th scope="col"><?php echo $L->g("category"); ?></th>
-            <th scope="col"></th>
+            <th scope="col"><?php echo $L->g("actions"); ?></th>
         </tr>
     </thead>
     <tbody>
