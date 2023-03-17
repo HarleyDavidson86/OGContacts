@@ -77,6 +77,27 @@ class ogcontacts extends Plugin
         //Save categories
         $jser = json_encode($configData, JSON_PRETTY_PRINT);
         file_put_contents(OGC_CONFIGFILE_PATH, $jser);
+      } else if (OGC_FIELDSVIEW) {
+        //Put fields in list
+        $contactfieldsList = array();
+        //We limit this to max 20 fields
+        //Field 0 is always name. We ignore this.
+        for ($i = 1; $i < 20; $i++) {
+          if (isset($_POST['contactfield' . $i])) {
+            //Empty inputfields are ignored
+            if (strlen($_POST['contactfield' . $i]) > 0) {
+              array_push($contactfieldsList, $_POST['contactfield' . $i]);
+            }
+          }
+        }
+        //Load config json
+        $filecontent = file_get_contents(OGC_CONFIGFILE_PATH);
+        $configData = json_decode($filecontent);
+        //Replace categories with new ones
+        $configData->contactfields = $contactfieldsList;
+        //Save categories
+        $jser = json_encode($configData, JSON_PRETTY_PRINT);
+        file_put_contents(OGC_CONFIGFILE_PATH, $jser);
       }
     }
   }

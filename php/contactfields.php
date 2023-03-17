@@ -15,8 +15,7 @@ $contactfields = $configData->contactfields;
     <?php for ($i = 0; $i < count($contactfields); $i++) { ?>
         <div class="form-group">
             <label></label>
-            <input type="text" class="form-control" id="contactfield<?php echo ($i+1); ?>" name="contactfield
-            <?php echo ($i+1); ?>" value="<?php echo $contactfields[$i]; ?>" />
+            <input type="text" class="form-control" id="contactfield<?php echo ($i+1); ?>" name="contactfield<?php echo ($i+1); ?>" value="<?php echo $contactfields[$i]; ?>" />
         </div>
     <?php } ?>
     <div id="contactfieldcontainer"></div>
