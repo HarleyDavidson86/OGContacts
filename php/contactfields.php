@@ -14,7 +14,7 @@ $contactfields = $configData->contactfields;
         </div>
     <?php } ?>
     <div id="contactfieldcontainer"></div>
-    <input type="submit" name="submit" class="btn btn-success" value="Speichern">
+    <input type="submit" name="submit" class="btn btn-success" value="<?php echo $L->g("save"); ?>">
 </form>
 
 <script>

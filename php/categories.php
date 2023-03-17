@@ -14,7 +14,7 @@ $categories = $configData->categories;
         </div>
     <?php } ?>
     <div id="categorycontainer"></div>
-    <input type="submit" name="submit" class="btn btn-success" value="Speichern">
+    <input type="submit" name="submit" class="btn btn-success" value="<?php echo $L->g("save"); ?>">
 </form>
 
 <script>
