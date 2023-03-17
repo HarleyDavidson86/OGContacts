@@ -1,4 +1,5 @@
 <?php
+include 'OGCHelper.php';
 //Load categories from config.json
 $filecontent = file_get_contents(OGC_CONFIGFILE_PATH);
 $configData = json_decode($filecontent);
@@ -16,11 +17,22 @@ $contactfields = $configData->contactfields;
         <input type="text" class="form-control" name="name" value="" />
     </div>
     <!-- category dropdown -->
-    <label for="inputState"><?php echo $L->g("category"); ?></label>
-    <select id="inputState" class="form-control">
-        <?php for ($i = 0; $i < count($categories); $i++) { ?>
-            <option><?php echo $categories[$i]; ?></option>
-        <?php } ?>
-    </select>
-
+    <div class="form-group">
+        <label for="inputCategory"><?php echo $L->g("category"); ?></label>
+        <select id="inputCategory" class="form-control">
+            <?php for ($i = 0; $i < count($categories); $i++) { ?>
+                <option><?php echo $categories[$i]; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <hr class="my-4">
+    <!-- Fields -->
+    <?php for ($i = 0; $i < count($contactfields); $i++) { ?>
+        <div class="form-group">
+            <label><?php echo $contactfields[$i]; ?></label>
+            <input type="text" class="form-control" name="<?php echo OGCHelper::toId($contactfields[$i]) ?>" value="" />
+        </div>
+    <?php } ?>
+    <input type="submit" name="submit" class="btn btn-success" value="<?php echo $L->g("save"); ?>">
+    <a class="btn btn-primary" href="<?php echo OGC_PLUGIN_PATH; ?>"><?php echo $L->g("cancel"); ?></a>
 </form>
