@@ -1,0 +1,12 @@
+{
+    "categories": [
+        "Category1",
+        "Category2",
+        "Category3"
+    ],
+    "contactfields": [
+        "Name",
+        "E-Mail",
+        "Position"
+    ]
+}

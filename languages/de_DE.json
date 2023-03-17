@@ -1,0 +1,10 @@
+{
+    "plugin-data":
+    {
+        "name": "OG Contacts",
+        "description": "Kontakteverwaltung für deine Homepage"
+    },
+    "contactlist" : "Kontakte",
+    "categories" : "Kategorien",
+    "contactfields" : "Felder"
+}
