@@ -9,11 +9,13 @@ class ogcontacts extends Plugin
     $url = HTML_PATH_ADMIN_ROOT . 'plugin/' . $pluginName;
     define('OGC_PLUGIN_PATH', $url);
     define('OGC_PLUGIN_PATH_CATEGORIES', $url . '?categories');
-    define('OGC_PLUGIN_PATH_FIELDS', $url . '?fields');
+    define('OGC_PLUGIN_PATH_CONTACTFIELDS', $url . '?fields');
 
     define('OGC_LISTVIEW', !isset($_GET['categories']) && !isset($_GET['fields']));
     define('OGC_CATEGORIESVIEW', isset($_GET['categories']));
     define('OGC_FIELDSVIEW', isset($_GET['fields']));
+
+    define('OGC_CONFIGFILE_PATH', $this->phpPath() . 'data/config.json');
   }
 
   public function adminView()
@@ -30,7 +32,7 @@ class ogcontacts extends Plugin
     echo  '<a class="nav-link ' . (OGC_CATEGORIESVIEW ? 'active' : '') . '" href="' . OGC_PLUGIN_PATH_CATEGORIES . '">' . $L->g("categories") . '</a>';
     echo  '</li>';
     echo  '<li class="nav-item">';
-    echo  '<a class="nav-link ' . (OGC_FIELDSVIEW ? 'active' : '') . '" href="' . OGC_PLUGIN_PATH_FIELDS . '">' . $L->g("contactfields") . '</a>';
+    echo  '<a class="nav-link ' . (OGC_FIELDSVIEW ? 'active' : '') . '" href="' . OGC_PLUGIN_PATH_CONTACTFIELDS . '">' . $L->g("contactfields") . '</a>';
     echo  '</li>';
     echo  '</ul>';
     if (OGC_LISTVIEW) {
@@ -40,7 +42,7 @@ class ogcontacts extends Plugin
       include($this->phpPath() . 'php/categories.php');
     }
     if (OGC_FIELDSVIEW) {
-      echo '<p>Fields View</p>';
+      include($this->phpPath() . 'php/contactfields.php');
     }
   }
 
@@ -61,14 +63,13 @@ class ogcontacts extends Plugin
           }
         }
         //Load config json
-        $file = $this->phpPath() . 'data/config.json';
-        $filecontent = file_get_contents($file);
+        $filecontent = file_get_contents(OGC_CONFIGFILE_PATH);
         $configData = json_decode($filecontent);
         //Replace categories with new ones
         $configData->categories = $categoryList;
         //Save categories
         $jser = json_encode($configData, JSON_PRETTY_PRINT);
-        file_put_contents($file, $jser);
+        file_put_contents(OGC_CONFIGFILE_PATH, $jser);
       }
     }
   }

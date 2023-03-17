@@ -2,33 +2,33 @@
 //Load categories from config.json
 $filecontent = file_get_contents(OGC_CONFIGFILE_PATH);
 $configData = json_decode($filecontent);
-//Array of all categories
-$categories = $configData->categories;
+//Array of all fields
+$contactfields = $configData->contactfields;
 ?>
-<form method="POST" action="<?php echo OGC_PLUGIN_PATH_CATEGORIES; ?>">
+<form method="POST" action="<?php echo OGC_PLUGIN_PATH_CONTACTFIELDS; ?>">
     <input type="hidden" id="jstokenCSRF" name="tokenCSRF" value="<?php echo $tokenCSRF; ?>">
-    <?php for ($i = 0; $i < count($categories); $i++) { ?>
+    <?php for ($i = 0; $i < count($contactfields); $i++) { ?>
         <div class="form-group">
             <label></label>
-            <input type="text" class="form-control" id="category<?php echo $i; ?>" name="category<?php echo $i; ?>" value="<?php echo $categories[$i]; ?>" />
+            <input type="text" class="form-control" id="contactfield<?php echo $i; ?>" name="contactfield<?php echo $i; ?>" value="<?php echo $contactfields[$i]; ?>" />
         </div>
     <?php } ?>
-    <div id="categorycontainer"></div>
+    <div id="contactfieldcontainer"></div>
     <input type="submit" name="submit" class="btn btn-success" value="Speichern">
 </form>
 
 <script>
-    //Create new empty category field
+    //Create new empty contactfield
     $(document).ready(function() {
-        createNext(<?php echo count($categories); ?>);
+        createNext(<?php echo count($contactfields); ?>);
     });
 
 
     function createNext(index) {
-        //If new category does not exist and the input element before
+        //If new contactfield does not exist and the input element before
         //has some value
-        if ($('#category' + index).length == 0 &&
-            $('#category' + (index - 1)).val().length > 0) {
+        if ($('#contactfield' + index).length == 0 &&
+            $('#contactfield' + (index - 1)).val().length > 0) {
             // Create new input field
             var next = $('<div>', {
                 class: 'form-group'
@@ -38,15 +38,15 @@ $categories = $configData->categories;
             var input = $('<input>', {
                 type: 'text',
                 class: 'form-control',
-                name: 'category' + (index + 1),
-                id: 'category' + index
+                name: 'contactfield' + (index + 1),
+                id: 'contactfield' + index
             })
             input.on('keypress', function() {
                 createNext(index + 1)
             });
 
             next.append(input)
-            next.appendTo($('#categorycontainer'));
+            next.appendTo($('#contactfieldcontainer'));
         }
     }
 </script>
