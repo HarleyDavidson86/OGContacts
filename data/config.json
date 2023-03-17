@@ -5,8 +5,8 @@
         "Category3"
     ],
     "contactfields": [
-        "Name",
-        "E-Mail",
-        "Position"
+        "Field1",
+        "Field2",
+        "Field3"
     ]
 }
