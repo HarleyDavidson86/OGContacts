@@ -49,8 +49,26 @@ class ogcontacts extends Plugin
   {
     if ($_POST['submit']) {
       if (OGC_CATEGORIESVIEW) {
+        //Put categories in list
+        $categoryList = array();
+        //We limit this to max 20 categories
+        for ($i = 0; $i < 20; $i++) {
+          if (isset($_POST['category' . $i])) {
+            //Empty inputfields are ignored
+            if (strlen($_POST['category' . $i]) > 0) {
+              array_push($categoryList, $_POST['category' . $i]);
+            }
+          }
+        }
+        //Load config json
+        $file = $this->phpPath() . 'data/config.json';
+        $filecontent = file_get_contents($file);
+        $configData = json_decode($filecontent);
+        //Replace categories with new ones
+        $configData->categories = $categoryList;
         //Save categories
-        echo print_r($_POST);
+        $jser = json_encode($configData, JSON_PRETTY_PRINT);
+        file_put_contents($file, $jser);
       }
     }
   }
