@@ -19,7 +19,7 @@ $contactfields = $configData->contactfields;
     <!-- category dropdown -->
     <div class="form-group">
         <label for="inputCategory"><?php echo $L->g("category"); ?></label>
-        <select id="inputCategory" class="form-control">
+        <select id="inputCategory" name="category" class="form-control">
             <?php for ($i = 0; $i < count($categories); $i++) { ?>
                 <option><?php echo $categories[$i]; ?></option>
             <?php } ?>

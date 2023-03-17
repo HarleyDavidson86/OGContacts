@@ -57,47 +57,72 @@ class ogcontacts extends Plugin
   public function adminController()
   {
     if ($_POST['submit']) {
-      if (OGC_CATEGORIESVIEW) {
-        //Put categories in list
-        $categoryList = array();
-        //We limit this to max 20 categories
-        for ($i = 0; $i < 20; $i++) {
-          if (isset($_POST['category' . $i])) {
-            //Empty inputfields are ignored
-            if (strlen($_POST['category' . $i]) > 0) {
-              array_push($categoryList, $_POST['category' . $i]);
+      //Load config json
+      $filecontent = file_get_contents(OGC_CONFIGFILE_PATH);
+      $configData = json_decode($filecontent);
+      if (OGC_CATEGORIESVIEW || OGC_FIELDSVIEW) {
+        if (OGC_CATEGORIESVIEW) {
+          //Put categories in list
+          $categoryList = array();
+          //We limit this to max 20 categories
+          for ($i = 0; $i < 20; $i++) {
+            if (isset($_POST['category' . $i])) {
+              //Empty inputfields are ignored
+              if (strlen($_POST['category' . $i]) > 0) {
+                array_push($categoryList, $_POST['category' . $i]);
+              }
             }
           }
-        }
-        //Load config json
-        $filecontent = file_get_contents(OGC_CONFIGFILE_PATH);
-        $configData = json_decode($filecontent);
-        //Replace categories with new ones
-        $configData->categories = $categoryList;
-        //Save categories
-        $jser = json_encode($configData, JSON_PRETTY_PRINT);
-        file_put_contents(OGC_CONFIGFILE_PATH, $jser);
-      } else if (OGC_FIELDSVIEW) {
-        //Put fields in list
-        $contactfieldsList = array();
-        //We limit this to max 20 fields
-        //Field 0 is always name. We ignore this.
-        for ($i = 1; $i < 20; $i++) {
-          if (isset($_POST['contactfield' . $i])) {
-            //Empty inputfields are ignored
-            if (strlen($_POST['contactfield' . $i]) > 0) {
-              array_push($contactfieldsList, $_POST['contactfield' . $i]);
+          //Replace categories with new ones
+          $configData->categories = $categoryList;
+        } else {
+          //Put fields in list
+          $contactfieldsList = array();
+          //We limit this to max 20 fields
+          //Field 0 is always name. We ignore this.
+          for ($i = 1; $i < 20; $i++) {
+            if (isset($_POST['contactfield' . $i])) {
+              //Empty inputfields are ignored
+              if (strlen($_POST['contactfield' . $i]) > 0) {
+                array_push($contactfieldsList, $_POST['contactfield' . $i]);
+              }
             }
           }
+          //Replace categories with new ones
+          $configData->contactfields = $contactfieldsList;
         }
-        //Load config json
-        $filecontent = file_get_contents(OGC_CONFIGFILE_PATH);
-        $configData = json_decode($filecontent);
-        //Replace categories with new ones
-        $configData->contactfields = $contactfieldsList;
-        //Save categories
+        //Save configfile
         $jser = json_encode($configData, JSON_PRETTY_PRINT);
         file_put_contents(OGC_CONFIGFILE_PATH, $jser);
+      } else {
+        //User Actions
+        include $this->phpPath().'./php/OGCHelper.php';
+        //Load data json
+        $filecontent = file_get_contents(OGC_CONTACTSFILE_PATH);
+        $contactData = json_decode($filecontent);
+
+        if (isset($_POST['id'])) {
+          //We have an id: Update
+          //Find User with id
+          //Update fields
+          //Replace
+        } else {
+          //We have no id: New User
+          $newuser = array();
+          //Generate new id (current max id + 1)
+          $newuser['id'] = max(array_column($contactData->contacts, 'id')) + 1;
+          $newuser['name'] = $_POST['name'];
+          $newuser['category'] = $_POST['category'];
+          foreach ($configData->contactfields as $field) {
+            $fieldid = OGCHelper::toId($field);
+            $newuser[$fieldid] = $_POST[$fieldid];
+          }
+          //Add to data
+          array_push($contactData->contacts, $newuser);
+        }
+        //Save configfile
+        $jser = json_encode($contactData, JSON_PRETTY_PRINT);
+        file_put_contents(OGC_CONTACTSFILE_PATH, $jser);
       }
     }
   }

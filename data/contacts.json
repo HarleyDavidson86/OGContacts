@@ -1,19 +1,19 @@
 {
     "contacts": [
         {
-            "id" : 1,
-            "name" : "John Doe",
-            "category" : "Category1"
+            "id": 1,
+            "name": "John Doe",
+            "category": "Category1"
         },
         {
-            "id" : 2,
-            "name" : "Jane Doe",
-            "category" : "Category2"
+            "id": 2,
+            "name": "Jane Doe",
+            "category": "Category2"
         },
         {
-            "id" : 3,
-            "name" : "John Doe's Brother",
-            "category" : "Category3"
+            "id": 3,
+            "name": "John Doe's Brother",
+            "category": "Category3"
         }
     ]
 }
