@@ -174,11 +174,6 @@ class ogcontacts extends Plugin
     return $html;
   }
 
-  public function siteHead()
-  {
-    //TODO Add CSS
-  }
-
   public function pageBegin()
   {
     //Replace placeholder with contact
