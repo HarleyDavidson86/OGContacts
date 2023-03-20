@@ -11,11 +11,13 @@ class ogcontacts extends Plugin
     define('OGC_PLUGIN_PATH_CATEGORIES', $url . '?categories');
     define('OGC_PLUGIN_PATH_CONTACTFIELDS', $url . '?fields');
     define('OGC_PLUGIN_PATH_ADDNEW', $url . '?addnew');
+    define('OGC_PLUGIN_PATH_EDIT', $url . '?edit');
 
     define('OGC_LISTVIEW', !isset($_GET['categories']) && !isset($_GET['fields']));
     define('OGC_CATEGORIESVIEW', isset($_GET['categories']));
     define('OGC_FIELDSVIEW', isset($_GET['fields']));
     define('OGC_NEWCONTACTVIEW', isset($_GET['addnew']));
+    define('OGC_EDITVIEW', isset($_GET['edit']));
 
     define('OGC_CONFIGFILE_PATH', $this->phpPath() . 'data/config.json');
     define('OGC_CONTACTSFILE_PATH', $this->phpPath() . 'data/contacts.json');
@@ -39,7 +41,7 @@ class ogcontacts extends Plugin
     echo  '</li>';
     echo  '</ul>';
     if (OGC_LISTVIEW) {
-      if (OGC_NEWCONTACTVIEW) {
+      if (OGC_NEWCONTACTVIEW || OGC_EDITVIEW) {
         include($this->phpPath() . 'php/addnew.php');
       } else {
         include($this->phpPath() . 'php/list.php');
@@ -96,16 +98,29 @@ class ogcontacts extends Plugin
         file_put_contents(OGC_CONFIGFILE_PATH, $jser);
       } else {
         //User Actions
-        include $this->phpPath().'./php/OGCHelper.php';
+        include $this->phpPath() . './php/OGCHelper.php';
         //Load data json
         $filecontent = file_get_contents(OGC_CONTACTSFILE_PATH);
         $contactData = json_decode($filecontent);
 
         if (isset($_POST['id'])) {
           //We have an id: Update
-          //Find User with id
-          //Update fields
-          //Replace
+          $newuser = array();
+          $newuser['id'] = $_POST['id'];
+          $newuser['name'] = $_POST['name'];
+          $newuser['category'] = $_POST['category'];
+          foreach ($configData->contactfields as $field) {
+            $fieldid = OGCHelper::toId($field);
+            $newuser[$fieldid] = $_POST[$fieldid];
+          }
+          //Find User with id in db and replace
+          for ($i = 0; $i < count($contactData->contacts); $i++) { 
+            if ($contactData->contacts[$i]->id == $_POST['id']) {
+              $replacement = array($i => $newuser);
+              $contactData->contacts = array_replace($contactData->contacts, $replacement);
+              break;
+            }
+          }          
         } else {
           //We have no id: New User
           $newuser = array();
