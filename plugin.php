@@ -12,12 +12,14 @@ class ogcontacts extends Plugin
     define('OGC_PLUGIN_PATH_CONTACTFIELDS', $url . '?fields');
     define('OGC_PLUGIN_PATH_ADDNEW', $url . '?addnew');
     define('OGC_PLUGIN_PATH_EDIT', $url . '?edit');
+    define('OGC_PLUGIN_PATH_DELETE', $url . '?delete');
 
     define('OGC_LISTVIEW', !isset($_GET['categories']) && !isset($_GET['fields']));
     define('OGC_CATEGORIESVIEW', isset($_GET['categories']));
     define('OGC_FIELDSVIEW', isset($_GET['fields']));
     define('OGC_NEWCONTACTVIEW', isset($_GET['addnew']));
     define('OGC_EDITVIEW', isset($_GET['edit']));
+    define('OGC_DELETECONTACT', isset($_GET['delete']));
 
     define('OGC_CONFIGFILE_PATH', $this->phpPath() . 'data/config.json');
     define('OGC_CONTACTSFILE_PATH', $this->phpPath() . 'data/contacts.json');
@@ -114,13 +116,13 @@ class ogcontacts extends Plugin
             $newuser[$fieldid] = $_POST[$fieldid];
           }
           //Find User with id in db and replace
-          for ($i = 0; $i < count($contactData->contacts); $i++) { 
+          for ($i = 0; $i < count($contactData->contacts); $i++) {
             if ($contactData->contacts[$i]->id == $_POST['id']) {
               $replacement = array($i => $newuser);
               $contactData->contacts = array_replace($contactData->contacts, $replacement);
               break;
             }
-          }          
+          }
         } else {
           //We have no id: New User
           $newuser = array();
@@ -135,10 +137,27 @@ class ogcontacts extends Plugin
           //Add to data
           array_push($contactData->contacts, $newuser);
         }
-        //Save configfile
+        //Save datafile
         $jser = json_encode($contactData, JSON_PRETTY_PRINT);
         file_put_contents(OGC_CONTACTSFILE_PATH, $jser);
       }
+    }
+    if (OGC_DELETECONTACT) {
+      //Load data json
+      $filecontent = file_get_contents(OGC_CONTACTSFILE_PATH);
+      $contactData = json_decode($filecontent);
+      $contacts = $contactData->contacts;
+      //Find User with id in db and replace
+      $newcontacts = array();
+      foreach ($contacts as $contact) {
+        if ($contact->id != $_GET['id']) {
+          array_push($newcontacts, $contact);
+        }
+      }
+      $contactData->contacts = $newcontacts;
+      //Save datafile
+      $jser = json_encode($contactData, JSON_PRETTY_PRINT);
+      file_put_contents(OGC_CONTACTSFILE_PATH, $jser);
     }
   }
 
