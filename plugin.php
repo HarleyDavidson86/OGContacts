@@ -126,8 +126,11 @@ class ogcontacts extends Plugin
         } else {
           //We have no id: New User
           $newuser = array();
-          //Generate new id (current max id + 1)
-          $newuser['id'] = max(array_column($contactData->contacts, 'id')) + 1;
+          $newuser['id'] = 1;
+          //Generate new id (current max id + 1) if there are contacts already
+          if (count($contactData->contacts) > 0) {
+            $newuser['id'] = max(array_column($contactData->contacts, 'id')) + 1;
+          }
           $newuser['name'] = $_POST['name'];
           $newuser['category'] = $_POST['category'];
           foreach ($configData->contactfields as $field) {
