@@ -1,19 +1,28 @@
 {
     "contacts": [
         {
-            "id": 1,
+            "id": "1",
             "name": "John Doe",
-            "category": "Category1"
+            "category": "Category1",
+            "position": "CEO Founder",
+            "email": "john.doe@omdriebigs-gspann.de",
+            "phone": "+49 1234 567890"
         },
         {
             "id": 2,
             "name": "Jane Doe",
-            "category": "Category2"
+            "category": "Category2",
+            "position": "Engineer",
+            "email": "jane.doe@omdriebigs-gspann.de",
+            "phone": "+49 1234 567890"
         },
         {
             "id": 3,
             "name": "John Doe's Brother",
-            "category": "Category3"
+            "category": "Category3",
+            "position": "Developer",
+            "email": "jim.doe@omdriebigs-gspann.de",
+            "phone": "+49 1234 567890"
         }
     ]
 }
