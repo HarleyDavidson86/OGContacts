@@ -8,5 +8,6 @@
     "categories" : "Categories",
     "contactfields" : "Contact Fields",
     "this field cannot be deleted": "This field is mandatory and cannot be deleted.",
-    "create-new-contact": "Create new contact"
+    "create-new-contact": "Create new contact",
+    "edit-contact": "Edit contact"
 }
