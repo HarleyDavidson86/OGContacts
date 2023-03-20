@@ -23,6 +23,7 @@ class ogcontacts extends Plugin
 
     define('OGC_CONFIGFILE_PATH', $this->phpPath() . 'data/config.json');
     define('OGC_CONTACTSFILE_PATH', $this->phpPath() . 'data/contacts.json');
+    define('OGC_DEFAULT_CARD', $this->phpPath() . 'layout/contactcard.php');
   }
 
   public function adminView()
@@ -178,19 +179,48 @@ class ogcontacts extends Plugin
     //TODO Add CSS
   }
 
-
-
-
   public function pageBegin()
   {
-    //TODO Replace placeholder with contact
-    // global $page;
-    // $newcontent = preg_replace_callback(
-    //   '/\\[% carousel=(.*) %\\]/i',
-    //   'runCarouselShortcode',
-    //   $page->content()
-    // );
-    // global $page;
-    // $page->setField('content', $newcontent);
+    //Replace placeholder with contact
+    global $page;
+    $newcontent = preg_replace_callback(
+      '/CONTACT{(?<ID>[0-9]+)(?<NAME>.*)}/',
+      'replaceContactCard',
+      $page->content()
+    );
+    global $page;
+    $page->setField('content', $newcontent);
   }
 };
+
+function replaceContactCard($matches)
+{
+  include 'php/OGCHelper.php';
+  $id = $matches[1];
+  $html = file_get_contents(THEME_DIR . 'contactcard.php');
+  if (!$html) {
+    //Load default layout
+    $html = file_get_contents(OGC_DEFAULT_CARD);
+  }
+  //Load data
+  //Load data json
+  $filecontent = file_get_contents(OGC_CONTACTSFILE_PATH);
+  $contactData = json_decode($filecontent);
+  $contacts = $contactData->contacts;
+
+  foreach ($contacts as $contact) {
+    if ($contact->id == $id) {
+      $filecontent = file_get_contents(OGC_CONFIGFILE_PATH);
+      $configData = json_decode($filecontent);
+      $fields = $configData->contactfields;
+      //Replace placeholder
+      $html = str_replace('{{name}}', $contact->name, $html);
+      foreach ($fields as $field) {
+        $fieldid = OGCHelper::toId($field);
+        $html = str_replace('{{' . $fieldid . '}}', $contact->$fieldid, $html);
+      }
+      break;
+    }
+  }
+  return $html;
+}
