@@ -24,7 +24,7 @@ $contacts = $contactsData->contacts;
                 <td><?php echo $contacts[$i]->name; ?></td>
                 <td><?php echo $contacts[$i]->category; ?></td>
                 <td>
-                    <a href="#"><i class="fa fa-edit"></i><?php echo $L->g("edit"); ?></a>
+                    <a href="<?php echo OGC_PLUGIN_PATH_EDIT.'&id='.$contacts[$i]->id; ?>"><i class="fa fa-edit"></i><?php echo $L->g("edit"); ?></a>
                     <a href="#" class="text-danger"><i class="fa fa-trash"></i><?php echo $L->g("delete"); ?></a>
                 </td>
             </tr>
