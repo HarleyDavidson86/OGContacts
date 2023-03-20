@@ -190,7 +190,7 @@ class ogcontacts extends Plugin
 
 function replaceContactCard($matches)
 {
-  include 'php/OGCHelper.php';
+  include_once 'php/OGCHelper.php';
   $id = $matches[1];
   $html = file_get_contents(THEME_DIR . 'contactcard.php');
   if (!$html) {
