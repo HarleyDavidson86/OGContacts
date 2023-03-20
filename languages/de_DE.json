@@ -9,5 +9,6 @@
     "contactfields" : "Felder",
     "this-field-cannot-be-deleted": "Dieses Feld kann nicht entfernt werden.",
     "create-new-contact": "Neuen Kontakt erstellen",
-    "edit-contact": "Kontakt bearbeiten"
+    "edit-contact": "Kontakt bearbeiten",
+    "placeholder": "Platzhalter"
 }

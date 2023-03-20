@@ -9,5 +9,6 @@
     "contactfields" : "Contact Fields",
     "this field cannot be deleted": "This field is mandatory and cannot be deleted.",
     "create-new-contact": "Create new contact",
-    "edit-contact": "Edit contact"
+    "edit-contact": "Edit contact",
+    "placeholder": "Placeholder"
 }
