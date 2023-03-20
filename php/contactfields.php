@@ -4,6 +4,11 @@ $filecontent = file_get_contents(OGC_CONFIGFILE_PATH);
 $configData = json_decode($filecontent);
 //Array of all fields
 $contactfields = $configData->contactfields;
+//Show at least one field for categories
+if ($contactfields == null) {
+    $contactfields = array();
+    array_push($contactfields, '');
+}
 ?>
 <form method="POST" action="<?php echo OGC_PLUGIN_PATH_CONTACTFIELDS; ?>">
     <input type="hidden" id="jstokenCSRF" name="tokenCSRF" value="<?php echo $tokenCSRF; ?>">
