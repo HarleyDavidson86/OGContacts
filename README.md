@@ -14,5 +14,12 @@ In the third tab you can create fields which are available later in the contacts
 
 If you want to delete a field, just empty the input field and hit save.
 
+Remember to adjust your contactcard.php that the new fields are
+shown correctly.
+
 ## Set a link in content
-TODO
+To show a contact on a page, just copy the placeholder snippet you see in the contactlist.
+This placeholder will be replaced with the contactcard.
+
+## Customize the contact card
+The plugin is looking for a file called ``contactcard.php`` in your themes folder. If you want to customize the card, just copy the ``layout/contactcard.php`` in your themes folder and edit it.
