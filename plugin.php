@@ -24,6 +24,13 @@ class ogcontacts extends Plugin
     define('OGC_CONFIGFILE_PATH', $this->phpPath() . 'data/config.json');
     define('OGC_CONTACTSFILE_PATH', $this->phpPath() . 'data/contacts.json');
     define('OGC_DEFAULT_CARD', $this->phpPath() . 'layout/contactcard.php');
+
+    if (!file_exists(OGC_CONFIGFILE_PATH)) {
+      createDefaultConfigfile();
+    }
+    if (!file_exists(OGC_CONTACTSFILE_PATH)) {
+      createDefaultContactsfile();
+    }
   }
 
   public function adminView()
@@ -109,7 +116,7 @@ class ogcontacts extends Plugin
         if (isset($_POST['id'])) {
           //We have an id: Update
           $newuser = array();
-          $newuser['id'] = $_POST['id'];
+          $newuser['id'] = intval($_POST['id']);
           $newuser['name'] = $_POST['name'];
           $newuser['category'] = $_POST['category'];
           foreach ($configData->contactfields as $field) {
@@ -218,4 +225,36 @@ function replaceContactCard($matches)
     }
   }
   return $html;
+}
+
+//Creates a default configfile
+function createDefaultConfigfile() {
+  $configData = new stdClass();
+  $configData->categories = array('Category1', 'Category2', 'Category3');
+  $configData->contactfields = array('Position', 'E-Mail', 'Phone');
+  $jser = json_encode($configData, JSON_PRETTY_PRINT);
+  file_put_contents(OGC_CONFIGFILE_PATH, $jser);
+}
+
+//Creates a default contactfile
+function createDefaultContactsfile() {
+  $contactData = new stdClass();
+  $contactData->contacts = array(
+    createDefaultUser(1, 'John Doe', 'Category1', 'CEO Founder', 'john.doe@omdriebigs-gspann.de'),
+    createDefaultUser(2, 'Jane Doe', 'Category2', 'Engineer', 'jane.doe@omdriebigs-gspann.de'),
+    createDefaultUser(3, 'John Doe\'s Brother', 'Category3', 'Developer', 'jim.doe@omdriebigs-gspann.de')
+  );
+  $jser = json_encode($contactData, JSON_PRETTY_PRINT);
+  file_put_contents(OGC_CONTACTSFILE_PATH, $jser);
+}
+
+function createDefaultUser($id, $name, $cat, $pos, $email) {
+  $result = new stdClass();
+  $result->id = $id;
+  $result->name = $name;
+  $result->category = $cat;
+  $result->position = $pos;
+  $result->email = $email;
+  $result->phone = '+49 1234 567890';
+  return $result;
 }
