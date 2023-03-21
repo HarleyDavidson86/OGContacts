@@ -22,4 +22,4 @@ To show a contact on a page, just copy the placeholder snippet you see in the co
 This placeholder will be replaced with the contactcard.
 
 ## Customize the contact card
-The plugin is looking for a file called ``contactcard.php`` in your themes folder. If you want to customize the card, just copy the ``layout/contactcard.php`` in your themes folder and edit it.
+The plugin is looking for a file called ``contactcard.php`` in your themes folder. If you want to customize the card, just copy the ``layout/contactcard.php`` in your themes folder and edit it. In this file you have access to the object ``$fields`` and ``$contact`` to access all information you want to place. Just have a look to the default ``contactcard.php``.
