@@ -199,11 +199,6 @@ function replaceContactCard($matches)
 {
   include_once 'php/OGCHelper.php';
   $id = $matches[1];
-  $html = file_get_contents(THEME_DIR . 'contactcard.php');
-  if (!$html) {
-    //Load default layout
-    $html = file_get_contents(OGC_DEFAULT_CARD);
-  }
   //Load data
   //Load data json
   $filecontent = file_get_contents(OGC_CONTACTSFILE_PATH);
@@ -215,20 +210,21 @@ function replaceContactCard($matches)
       $filecontent = file_get_contents(OGC_CONFIGFILE_PATH);
       $configData = json_decode($filecontent);
       $fields = $configData->contactfields;
-      //Replace placeholder
-      $html = str_replace('{{name}}', $contact->name, $html);
-      foreach ($fields as $field) {
-        $fieldid = OGCHelper::toId($field);
-        $html = str_replace('{{' . $fieldid . '}}', $contact->$fieldid, $html);
+
+      ob_start();
+      if (file_exists(THEME_DIR . 'contactcard.php')) {
+        include THEME_DIR . 'contactcard.php';
+      } else {
+        include OGC_DEFAULT_CARD;
       }
-      break;
+      return ob_get_clean();
     }
   }
-  return $html;
 }
 
 //Creates a default configfile
-function createDefaultConfigfile() {
+function createDefaultConfigfile()
+{
   $configData = new stdClass();
   $configData->categories = array('Category1', 'Category2', 'Category3');
   $configData->contactfields = array('Position', 'E-Mail', 'Phone');
@@ -237,7 +233,8 @@ function createDefaultConfigfile() {
 }
 
 //Creates a default contactfile
-function createDefaultContactsfile() {
+function createDefaultContactsfile()
+{
   $contactData = new stdClass();
   $contactData->contacts = array(
     createDefaultUser(1, 'John Doe', 'Category1', 'CEO Founder', 'john.doe@omdriebigs-gspann.de'),
@@ -248,7 +245,8 @@ function createDefaultContactsfile() {
   file_put_contents(OGC_CONTACTSFILE_PATH, $jser);
 }
 
-function createDefaultUser($id, $name, $cat, $pos, $email) {
+function createDefaultUser($id, $name, $cat, $pos, $email)
+{
   $result = new stdClass();
   $result->id = $id;
   $result->name = $name;
