@@ -24,6 +24,7 @@ class ogcontacts extends Plugin
     define('OGC_CONFIGFILE_PATH', $this->phpPath() . 'data/config.json');
     define('OGC_CONTACTSFILE_PATH', $this->phpPath() . 'data/contacts.json');
     define('OGC_DEFAULT_CARD', $this->phpPath() . 'layout/contactcard.php');
+    define('OGC_DEFAULT_LIST', $this->phpPath() . 'layout/categorylist.php');
 
     if (!file_exists(OGC_CONFIGFILE_PATH)) {
       createDefaultConfigfile();
@@ -190,7 +191,13 @@ class ogcontacts extends Plugin
       'replaceContactCard',
       $page->content()
     );
-    global $page;
+    $page->setField('content', $newcontent);
+    //Replace category placeholder with contactlist
+    $newcontent = preg_replace_callback(
+      '/CONTACTLIST{(?<CATEGORYID>[a-z0-9]+)}/',
+      'replaceCategoryList',
+      $page->content()
+    );
     $page->setField('content', $newcontent);
   }
 };
@@ -220,6 +227,35 @@ function replaceContactCard($matches)
       return ob_get_clean();
     }
   }
+}
+
+function replaceCategoryList($matches)
+{
+  include_once 'php/OGCHelper.php';
+  $categoryid = $matches[1];
+  //Load fields
+  $filecontent = file_get_contents(OGC_CONFIGFILE_PATH);
+  $configData = json_decode($filecontent);
+  $fields = $configData->contactfields;
+  //Load contacts
+  $filecontent = file_get_contents(OGC_CONTACTSFILE_PATH);
+  $contactData = json_decode($filecontent);
+  $contacts = $contactData->contacts;
+  //Filter contact of category
+  $filteredcontacts = array();
+  foreach ($contacts as $contact) {
+    if (OGCHelper::toId($contact->category) == $categoryid) {
+      array_push($filteredcontacts, $contact);
+    }
+  }
+
+  ob_start();
+  if (file_exists(THEME_DIR . 'categorylist.php')) {
+    include THEME_DIR . 'categorylist.php';
+  } else {
+    include OGC_DEFAULT_LIST;
+  }
+  return ob_get_clean();
 }
 
 //Creates a default configfile
