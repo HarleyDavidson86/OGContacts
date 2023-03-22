@@ -1,4 +1,5 @@
 <?php
+include 'OGCHelper.php';
 //Load categories from config.json
 $filecontent = file_get_contents(OGC_CONFIGFILE_PATH);
 $configData = json_decode($filecontent);
@@ -16,6 +17,7 @@ if ($categories == null) {
         <div class="form-group">
             <label></label>
             <input type="text" class="form-control" id="category<?php echo $i; ?>" name="category<?php echo $i; ?>" value="<?php echo $categories[$i]; ?>" />
+            <small class="form-text text-muted">Id: <code><?php echo OGCHelper::toId($categories[$i]) ?></code></small>
         </div>
     <?php } ?>
     <div id="categorycontainer"></div>
