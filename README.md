@@ -32,6 +32,11 @@ This placeholder will be replaced with the contactcard.
 To show a list of contacts of a certain category, just place the shortcode ``CONTACTLIST{<CATEGORYID>}`` on a page.  
 You can find the category id in the category list view below the inputfield.
 
+You can also specify an own template for a list-view. Just place the shortcut ``CONTACTLIST{<CATEGORYID>;<TEMPLATENAME>}`` on a page.  
+The templatename must be lowercase and alphanumeric.  
+For example: ``CONTACTLIST{staff;stafflist}``. The plugin is looking for a file called ``categorylist.stafflist.php``. If it cannot find it,
+the default template will be used.
+
 ## Customize the contact card
 
 The plugin is looking for a file called ``contactcard.php`` in your themes folder. If you want to customize the card, just copy the ``layout/contactcard.php`` in your themes folder and edit it. In this file you have access to the object ``$fields`` and ``$contact`` to access all information you want to place. Just have a look to the default ``contactcard.php``.

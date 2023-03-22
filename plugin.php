@@ -194,7 +194,7 @@ class ogcontacts extends Plugin
     $page->setField('content', $newcontent);
     //Replace category placeholder with contactlist
     $newcontent = preg_replace_callback(
-      '/CONTACTLIST{(?<CATEGORYID>[a-z0-9]+)}/',
+      '/CONTACTLIST{(?<CATEGORYID>[a-z0-9]+)(?<TEMPLATE>;[a-z]+)?}/',
       'replaceCategoryList',
       $page->content()
     );
@@ -232,7 +232,8 @@ function replaceContactCard($matches)
 function replaceCategoryList($matches)
 {
   include_once 'php/OGCHelper.php';
-  $categoryid = $matches[1];
+  $categoryid = $matches['CATEGORYID'];
+  $template = $matches['TEMPLATE'];
   //Load fields
   $filecontent = file_get_contents(OGC_CONFIGFILE_PATH);
   $configData = json_decode($filecontent);
@@ -249,9 +250,21 @@ function replaceCategoryList($matches)
     }
   }
 
+  
+  $templateTheme = THEME_DIR . 'categorylist.php';
+  //Certain template
+  if ($template) {
+    //Does this exist?
+    //Substr because first char is semicolon
+    $certainTemplate = THEME_DIR . 'categorylist.'.substr($template, 1).'.php';
+    if (file_exists($certainTemplate)) {
+      $templateTheme = $certainTemplate;
+    }
+  }
+
   ob_start();
-  if (file_exists(THEME_DIR . 'categorylist.php')) {
-    include THEME_DIR . 'categorylist.php';
+  if (file_exists($templateTheme)) {
+    include $templateTheme;
   } else {
     include OGC_DEFAULT_LIST;
   }
